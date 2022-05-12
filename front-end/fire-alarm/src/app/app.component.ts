@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { collectionData, Firestore, collection, updateDoc, doc } from '@angular/fire/firestore';
-import  {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 import { LimitModalComponent } from './components/limit-modal/limit-modal.component';
 
 @Component({
@@ -8,12 +10,11 @@ import { LimitModalComponent } from './components/limit-modal/limit-modal.compon
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'fire-alarm';
+  private componentDestroyed = new Subject<any>();
 
-  constructor(private db: Firestore,private modalService: NgbModal) {
-    // console.log("tesst");
-
+  constructor(private db: Firestore, private modalService: NgbModal) {
   }
 
   public alarm: boolean = false;
@@ -28,43 +29,48 @@ export class AppComponent implements OnInit {
     hr: 0,
     min: 0
   }
-   public dateFormat:any;
+  public dateFormat: any;
   ngOnInit(): void {
 
     this.start();
   }
 
+
+
   start() {
     const fsRef = collection(this.db, 'main');
-    collectionData(fsRef).subscribe((data: any) => {
+    collectionData(fsRef).pipe(takeUntil(this.componentDestroyed)).subscribe((data: any) => {
       console.log(data);
       this.alarm = data[0].alarm;
       this.limit = data[1].limit;
       this.temp = data[2].temp;
+
       let currDate = new Date(data[2].date);
       this.date = {
         hr: currDate.getHours(),
         min: currDate.getMinutes()
       }
       if (this.limit <= this.temp) {
-        if(this.hasFire==false){
-          updateDoc(doc(this.db,'main','temp'),{date:Date.now()})
+        if (this.hasFire == false) {
+          updateDoc(doc(this.db, 'main', 'time'), { date: Date.now() })
           this.hasFire = true;
-          this.dateFormat = new Date(data[2].date);
+          // this.dateFormat = new Date(data[2].date);
+          let temp = new Date(data[3].date);
+          this.dateFormat = temp.getUTCDate() + "/" + (temp.getUTCMonth() + 1) + '/' + temp.getUTCFullYear() + " - " + temp.getHours() + ":" + temp.getMinutes();
         }
-      }else{
+      } else {
         this.hasFire = false;
-        this.dateFormat=0
+        this.dateFormat = 0;
       }
     })
   }
 
-  openModal(){
+  openModal() {
 
     const modalRef = this.modalService.open(LimitModalComponent);
     modalRef.componentInstance.limit = this.limit;
-    modalRef.result.then((res:any)=>{
-      if(res!==false){
+    modalRef.result.then((res: any) => {
+      if (res !== false) {
         this.updateLimit(res);
       }
     });
@@ -72,17 +78,21 @@ export class AppComponent implements OnInit {
   }
 
 
-  async updateLimit(limit:number){
+  async updateLimit(limit: number) {
     const limitRef = doc(this.db, 'main', 'limit');
     await updateDoc(limitRef, { limit: limit });
   }
-  async turnAlarm(temp:any){
-    if(temp=='on'){
-      await updateDoc(doc(this.db,'main','alarm'),{alarm:true})
+  async turnAlarm(temp: any) {
+    if (temp == 'on') {
+      await updateDoc(doc(this.db, 'main', 'alarm'), { alarm: true })
     }
-    else{
-      await updateDoc(doc(this.db,'main','alarm'),{alarm:false})
+    else {
+      await updateDoc(doc(this.db, 'main', 'alarm'), { alarm: false })
     }
+
+  }
+  ngOnDestroy() {
+    this.componentDestroyed.next();
 
   }
 }
