@@ -1,16 +1,16 @@
-<div class="card">
-  <div class="card-header">
-    DataTable
-  </div>
+<!-- <div class="card">
+  <div class="card-header">Fire data</div>
   <div class="card-body">
     <div class="table-responsive">
       <table class="table">
-        <caption>List of data</caption>
+        <caption>
+          List of data
+        </caption>
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Limit</th>
-            <th scope="col">Tempature</th>
+            <th scope="col">Temperature</th>
             <th scope="col">HasFire</th>
             <th scope="col">LastTimeRun</th>
             <th scope="col">FireStartAt</th>
@@ -20,22 +20,202 @@
         <tbody>
           <tr>
             <td scope="row">1</td>
-            <td>{{limit}}</td>
-            <td>{{temp}}</td>
-            <td *ngIf="hasFire " class="text-danger">Yes</td>
+            <td>{{ limit }}</td>
+            <td>{{ temp }}</td>
+            <td *ngIf="hasFire" class="text-danger">Yes</td>
             <td *ngIf="!hasFire" class="text-success">No</td>
-            <td>{{date.hr}}:{{date.min}}</td>
-            <td *ngIf="this.dateFormat!=0" class="text-danger">{{this.dateFormat}}</td>
-            <td *ngIf="this.dateFormat==0" class="text-success">Fire not started yet</td>
+            <td>{{ date.hr }}:{{ date.min }}</td>
+            <td *ngIf="this.dateFormat != 0" class="text-danger">
+              {{ this.dateFormat }}
+            </td>
+            <td *ngIf="this.dateFormat == 0" class="text-success">
+              Fire not started yet
+            </td>
             <td>
-              <button type="button" class="btn btn-primary" (click)="openModal()" >SetLimit</button>
-              <button type="button" class="btn btn-primary" (click)="turnAlarm('on')" *ngIf="!this.alarm" class="btn btn-success">Turn on Alarm</button>
-              <button type="button" class="btn btn-primary" (click)="turnAlarm('off')"*ngIf="this.alarm" class="btn btn-danger">Turn off Alarm</button>
+              <button type="button" class="btn btn-info" (click)="openModal()">
+                SetLimit
+              </button>
+              <button
+                style="margin-left: 10px"
+                type="button"
+                class="btn btn-primary"
+                (click)="turnAlarm('on')"
+                *ngIf="!this.alarm"
+                class="btn btn-success"
+              >
+                Turn on Alarm
+              </button>
+              <button
+                style="margin-left: 10px"
+                type="button"
+                class="btn btn-primary"
+                (click)="turnAlarm('off')"
+                *ngIf="this.alarm"
+                class="btn btn-danger"
+              >
+                Turn off Alarm
+              </button>
             </td>
           </tr>
-
         </tbody>
       </table>
     </div>
   </div>
-</div>
+</div> -->
+
+<!-- <caption class="top">
+  List of data
+</caption> -->
+
+<nav class="topnav">
+  <div class="branding">
+    <p>Fire warning app</p>
+  </div>
+  <div class="top-menu">
+    <!-- <p><a href="#">Home</a></p>
+    <p><a href="#">Services</a></p>
+    <p><a href="#">Portfolio</a></p>
+    <p><a href="#">Contact</a></p> -->
+  </div>
+</nav>
+
+<ul class="card-list">
+  <li class="card">
+    <a
+      class="card-image"
+      target="_blank"
+      style="background-color: lightskyblue"
+    >
+      <!-- <img
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/310408/psychopomp-100.jpg"
+        alt="Psychopomp"
+      /> -->
+    </a>
+    <a class="card-description" target="_blank">
+      <h2>Limit</h2>
+      <p>{{ limit }}</p>
+    </a>
+  </li>
+
+  <li class="card">
+    <a
+      class="card-image"
+      target="_blank"
+      style="background-color: lightskyblue"
+    >
+      <!-- <img
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/310408/lets-go-100.jpg"
+        alt="let's go"
+      /> -->
+    </a>
+    <a class="card-description" target="_blank">
+      <h2>Temperature</h2>
+      <p>{{ temp }}</p>
+    </a>
+  </li>
+
+  <li class="card">
+    <a
+      class="card-image"
+      target="_blank"
+      style="background-color: lightskyblue"
+    >
+      <!-- <img
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/310408/beautiful-game-100.jpg"
+        alt="The Beautiful Game"
+      /> -->
+    </a>
+    <a class="card-description" target="_blank">
+      <h2>HasFire</h2>
+      <p *ngIf="hasFire">Yes</p>
+      <p *ngIf="!hasFire">No</p>
+    </a>
+  </li>
+
+  <li class="card">
+    <a
+      class="card-image"
+      target="_blank"
+      style="background-color: lightskyblue"
+    >
+      <!-- <img
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/310408/jane-doe-100.jpg"
+        alt="Jane Doe"
+      /> -->
+    </a>
+    <a class="card-description" target="_blank">
+      <h2>LastTimeRun</h2>
+      <p>{{ date.hr }}:{{ date.min }}</p>
+    </a>
+  </li>
+  <li class="card">
+    <a
+      class="card-image"
+      target="_blank"
+      style="background-color: lightskyblue"
+    >
+      <!-- <img
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/310408/jane-doe-100.jpg"
+        alt="Jane Doe"
+      /> -->
+    </a>
+    <a class="card-description" target="_blank">
+      <h2>FireStartAt</h2>
+      <p *ngIf="this.dateFormat != 0">{{ this.dateFormat }}</p>
+      <p *ngIf="this.dateFormat == 0">Fire not started yet</p>
+    </a>
+  </li>
+</ul>
+
+<!-- HTML !-->
+<button class="button-75" type="button" (click)="openModal()">
+  <span class="text">Set Limit</span>
+</button>
+<button
+  class="button-76"
+  type="button"
+  (click)="turnAlarm('on')"
+  *ngIf="!this.alarm"
+>
+  <span class="text">Turn on alarm</span>
+</button>
+<button
+  class="button-76"
+  type="button"
+  (click)="turnAlarm('off')"
+  *ngIf="this.alarm"
+>
+  <span class="text">Turn off alarm</span>
+</button>
+
+<footer class="section bg-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="">
+          <h6 class="footer-heading text-uppercase text-white">Member</h6>
+          <ul class="list-unstyled footer-link mt-4">
+            <li><a href="">Minh Long</a></li>
+            <li><a href="">Thien Thien</a></li>
+            <li><a href="">Hoang Trung</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="">
+          <h6 class="footer-heading text-uppercase text-white">Role</h6>
+          <ul class="list-unstyled footer-link mt-4">
+            <li><a href="">IOT</a></li>
+            <li><a href="">Backend</a></li>
+            <li><a href="">Frontend</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5">
+    <p class="footer-alt mb-0 f-14">Fire warning app</p>
+  </div>
+</footer>
